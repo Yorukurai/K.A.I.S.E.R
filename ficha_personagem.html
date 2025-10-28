@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personagem O&R</title>
+    <link rel="stylesheet" href="estilo_ficha.css">
+</head>
+<body class="theme-violet"> 
+    <div class="ficha-container">
+        
+        <div class="coluna-esquerda">
+            <section class="bloco-info-principal">
+                <header class="header-foto-afinidade">
+                    
+                    <div class="foto-container" onclick="document.getElementById('file-upload').click()">
+                        <img id="personagem-foto" src="" alt="Foto do Personagem"> 
+                        <div class="upload-overlay" id="upload-overlay-text">CLIQUE PARA FAZER UPLOAD</div>
+                        <input type="file" id="file-upload" accept="image/*" style="display:none;">
+                    </div>
+                    
+                    <div class="afinidade-container">
+                        <div class="afinidade-slot" onclick="trocarSimboloEtema()">
+                            <img src="" alt="Símbolo de Afinidade" class="simbolo-icone-afinidade" id="simbolo-afinidade-icone">
+                        </div>
+                        <div class="afinidade-label">ENERGIA</div>
+                    </div>
+                </header>
+
+                <div class="info-basica-bloco">
+                    <div class="campo-destaque-item full-width">
+                        <label>NOME COMPLETO:</label>
+                        <input type="text" value="Nome do Personagem">
+                    </div>
+                    
+                    <div class="info-complementar-grid">
+                        <div class="campo-destaque-item">
+                            <label>CLASSE:</label>
+                            <select id="personagem-classe">
+                                <option value="ocultista">Ocultista</option>
+                                <option value="combatente">Combatente</option>
+                                <option value="especialista">Especialista</option>
+                                <option value="nenhum">Nenhum</option>
+                            </select>
+                        </div>
+                        <div class="campo-destaque-item">
+                            <label>NEX:</label>
+                            <select id="personagem-nex"></select>
+                        </div>
+                        <div class="campo-destaque-item">
+                            <label>ORIGEM:</label>
+                            <input type="text" value="Acadêmico">
+                        </div>
+                        <div class="campo-destaque-item">
+                            <label>AFILIAÇÃO:</label>
+                            <input type="text" value="Ordem">
+                        </div>
+                        <div class="campo-destaque-item">
+                            <label>PATENTE:</label>
+                            <input type="text" value="Operador">
+                        </div>  
+                    </div>
+                </div>
+            </section>
+
+            <section class="bloco-status-combate">
+                <div class="label-geral">STATUS VITAIS & COMBATE</div>
+                <div class="barras-status-container-horizontal">
+                    <div class="barra-secao pv">
+                        <div class="barra-label-status">PV</div>
+                        <div class="barra-progresso-fundo">
+                            <div id="vida-progresso" class="barra-progresso-preenchimento vida"></div>
+                            <div class="barra-progresso-texto">
+                                <input type="number" id="vida-atual" value="10" class="input-no-spin barra-input-atual"> /
+                                <input type="number" id="vida-max" value="10" class="input-no-spin barra-input-max">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="barra-secao pe">
+                        <div class="barra-label-status">PE</div>
+                        <div class="barra-progresso-fundo">
+                            <div id="pe-progresso" class="barra-progresso-preenchimento pe"></div>
+                            <div class="barra-progresso-texto">
+                                <input type="number" id="pe-atual" value="10" class="input-no-spin barra-input-atual"> /
+                                <input type="number" id="pe-max" value="10" class="input-no-spin barra-input-max">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="barra-secao san">
+                        <div class="barra-label-status">SAN</div>
+                        <div class="barra-progresso-fundo">
+                            <div id="sanidade-progresso" class="barra-progresso-preenchimento sanidade"></div>
+                            <div class="barra-progresso-texto">
+                                <input type="number" id="sanidade-atual" value="10" class="input-no-spin barra-input-atual"> /
+                                <input type="number" id="sanidade-max" value="10" class="input-no-spin barra-input-max">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="combate-info">
+                    <div id="secao-iniciativa" class="secao-combate secao-iniciativa-rolavel">
+                        <div class="label-combate">INICIATIVA</div>
+                        <input type="text" id="iniciativa-valor" value="+0" class="input-no-spin input-combate-valor" readonly>
+                    </div>
+                    <div class="secao-combate">
+                        <div class="label-combate">DEFESA</div>
+                        <input type="number" value="10" class="input-no-spin input-combate-valor">
+                    </div>
+                    <div class="secao-combate">
+                        <div class="label-combate">LIM. PE</div>
+                        <input type="text" value="3" class="input-no-spin input-combate-valor">
+                    </div>
+                </div>
+            </section>
+
+            <section class="bloco-atributos">
+                <div class="pentagono-atributos-container">
+                    <div class="pentagono-centro">ATRIBUTOS</div>
+
+                    <div class="secao-atributo pent-agi" data-atributo="agi" data-label="Agilidade">
+                        <div class="circulo-atributo">
+                            <div class="atributo-valor-container">
+                                <input type="number" value="0" class="input-atributo-pentagono input-atributo-editavel input-no-spin">
+                            </div>
+                            <label class="label-atributo-pentagono"><br>AGI</label>
+                        </div>
+                        <div class="input-atributo-mod-principal-display" id="mod-agi">0</div>
+                    </div>
+
+                    <div class="secao-atributo pent-int" data-atributo="int" data-label="Intelecto">
+                        <div class="circulo-atributo">
+                            <div class="atributo-valor-container">
+                                <input type="number" value="0" class="input-atributo-pentagono input-atributo-editavel input-no-spin">
+                            </div>
+                            <label class="label-atributo-pentagono"><br>INT</label>
+                        </div>
+                        <div class="input-atributo-mod-principal-display" id="mod-int">0</div>
+                    </div>
+                    
+                    <div class="secao-atributo pent-vig" data-atributo="vig" data-label="Vigor">
+                         <div class="circulo-atributo">
+                            <div class="atributo-valor-container">
+                                <input type="number" value="0" class="input-atributo-pentagono input-atributo-editavel input-no-spin">
+                            </div>
+                            <label class="label-atributo-pentagono"><br>VIG</label>
+                        </div>
+                        <div class="input-atributo-mod-principal-display" id="mod-vig">0</div>
+                    </div>
+
+                    <div class="secao-atributo pent-pre" data-atributo="pre" data-label="Presença">
+                         <div class="circulo-atributo">
+                             <div class="atributo-valor-container">
+                                <input type="number" value="0" class="input-atributo-pentagono input-atributo-editavel input-no-spin">
+                            </div>
+                            <label class="label-atributo-pentagono"><br>PRE</label>
+                        </div>
+                        <div class="input-atributo-mod-principal-display" id="mod-pre">0</div>
+                    </div>
+
+                    <div class="secao-atributo pent-for" data-atributo="for" data-label="Força">
+                         <div class="circulo-atributo">
+                            <div class="atributo-valor-container">
+                                <input type="number" value="0" class="input-atributo-pentagono input-atributo-editavel input-no-spin">
+                            </div>
+                            <label class="label-atributo-pentagono"><br>FOR</label>
+                        </div>
+                        <div class="input-atributo-mod-principal-display" id="mod-for">0</div>
+                    </div>
+                </div>
+            </section>
+        </div> 
+        
+        <div class="coluna-direita">
+            
+            <div class="ficha-abas-container">
+                <div class="tab-navigation">
+                    <button class="tab-button active" onclick="openTab(event, 'tab-pane-pericias')">PERÍCIAS</button>
+                    <button class="tab-button" onclick="openTab(event, 'tab-pane-ataques')">ATAQUES</button>
+                    <button class="tab-button" onclick="openTab(event, 'tab-pane-rituais')">RITUAIS</button>
+                    <button class="tab-button" onclick="openTab(event, 'tab-pane-inventario')">INVENTÁRIO</button>
+                    <button class="tab-button" onclick="openTab(event, 'tab-pane-log')">LOG</button>
+                </div>
+                
+                <div class="tab-panes-container">
+                    <div id="tab-pane-pericias" class="tab-pane active">
+                        <div class="pericias-list-grid">
+                            <div class="pericia-item-header">PERÍCIA</div>
+                            <div class="pericia-item-header">MOD</div>
+                            <div class="pericia-item-header">TREINO</div>
+                            <div class="pericia-item-header total-header">TOTAL</div>
+                            
+                            <div class="pericia-header-group" data-atributo="for">FORÇA</div>
+                            <div class="pericia-item" data-atributo="for"><label>Atletismo (FOR)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="for"><label>Escalada (FOR)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            
+                            <div class="pericia-header-group" data-atributo="agi">AGILIDADE</div>
+                            <div class="pericia-item" data-atributo="agi"><label>Acrobacia (AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="agi"><label>Equilibrio (AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="agi"><label>Esquiva (AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="agi"><label>Furtividade (AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="agi"><label>Natação (AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="agi"><label>Prestidigitação (AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="agi"><label>Precisão(AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="agi"><label>Pilotagem (AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="agi"><label>Reflexos (AGI)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            
+                            <div class="pericia-header-group" data-atributo="vig">VIGOR</div>
+                            <div class="pericia-item" data-atributo="vig"><label>Fortitude (VIG)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="vig"><label>Imunidade (VIG)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="vig"><label>Sobrevivência (VIG)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            
+                            <div class="pericia-header-group" data-atributo="int">INTELIGÊNCIA</div>
+                            <div class="pericia-item" data-atributo="int"><label>Ciências (INT)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="int"><label>História (INT)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="int"><label>Investigação (INT)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="int"><label>Medicina (INT)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="int"><label>Ocultismo (INT)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="int"><label>Tática (INT)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="int"><label>Tecnologia (INT)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            
+                            <div class="pericia-header-group" data-atributo="pre">PRESENÇA</div>
+                            <div class="pericia-item" data-atributo="pre"><label>Adestramento (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Artes (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Atualidades (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Diplomacia (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Enganação (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Intimidação (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Intuição (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Liderança (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Percepção (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Persuasão (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                            <div class="pericia-item" data-atributo="pre"><label>Vontade (PRE)</label><input type="text" value="+0" class="input-no-spin input-atributo-mod" readonly><input type="number" value="0" min="0" class="input-no-spin input-pericia-valor"><input type="text" value="+0" class="input-no-spin input-pericia-total" readonly></div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-pane-ataques" class="tab-pane">
+                        <table class="tabela-ataque" id="tabela-ataque">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">ARMA</th>
+                                    <th style="width: 15%;">BÔNUS</th>
+                                    <th style="width: 15%;">CRÍTICO</th>
+                                    <th style="width: 25%;">DANO</th>
+                                    <th style="width: 10%;">ATAQUE | DANO</th>
+                                    <th style="width: 5%;"></th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="input-tabela" value="Revolver"></td>
+                                    <td><input type="text" class="input-tabela" value="+5"></td>
+                                    <td><input type="text" class="input-tabela" value="18/x3"></td>
+                                    <td><input type="text" class="input-tabela" value="2d6+2 Balístico"></td>
+                                    <td class="celula-rolagem">
+                                        <button class="botao-rolar-dado" data-tipo="ataque" title="Rolar Ataque">
+                                            <span class="icone-rolar-dado"></span>
+                                        </button>
+                                        <button class="botao-rolar-dado" data-tipo="dano" title="Rolar Dano">
+                                            <span class="icone-rolar-dado"></span>
+                                        </button>
+                                    </td>
+                                    <td><button onclick="removerLinhaAtaque(this)" class="botao-remover-linha">X</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button onclick="adicionarLinhaAtaque()" class="botao-adicionar-linha-full botao-adicionar">+ Adicionar Arma / Ataque</button>
+                    </div>
+
+                    <div id="tab-pane-rituais" class="tab-pane">
+                        <div class="rituais-abas-container">
+                            <div class="rituais-tab-navigation">
+                                <button class="ritual-tab-button active" onclick="openRitualTab(event, 'ritual-1')">1º CÍRCULO</button>
+                                <button class="ritual-tab-button" onclick="openRitualTab(event, 'ritual-2')">2º CÍRCULO</button>
+                                <button class="ritual-tab-button" onclick="openRitualTab(event, 'ritual-3')">3º CÍRCULO</button>
+                                <button class="ritual-tab-button" onclick="openRitualTab(event, 'ritual-4')">4º CÍRCULO</button>
+                            </div>
+
+                            <div id="ritual-1" class="ritual-tab-pane active">
+                                <ul class="lista-rituais" id="lista-rituais-1"></ul>
+                                <button onclick="adicionarRitual(1)" class="botao-adicionar-ritual botao-adicionar">+ Adicionar Ritual (1º Círculo)</button>
+                            </div>
+                            <div id="ritual-2" class="ritual-tab-pane">
+                                <ul class="lista-rituais" id="lista-rituais-2"></ul>
+                                <button onclick="adicionarRitual(2)" class="botao-adicionar-ritual botao-adicionar">+ Adicionar Ritual (2º Círculo)</button>
+                            </div>
+                            <div id="ritual-3" class="ritual-tab-pane">
+                                <ul class="lista-rituais" id="lista-rituais-3"></ul>
+                                <button onclick="adicionarRitual(3)" class="botao-adicionar-ritual botao-adicionar">+ Adicionar Ritual (3º Círculo)</button>
+                            </div>
+                            <div id="ritual-4" class="ritual-tab-pane">
+                                <ul class="lista-rituais" id="lista-rituais-4"></ul>
+                                <button onclick="adicionarRitual(4)" class="botao-adicionar-ritual botao-adicionar">+ Adicionar Ritual (4º Círculo)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-pane-inventario" class="tab-pane">
+                        <div class="inventario-peso-limite">
+                            <label>CAPACIDADE TOTAL (FOR x 2):</label>
+                            <input type="text" id="inventario-capacidade" value="0">
+                            <label>ESPAÇOS OCUPADOS:</label>
+                            <input type="number" id="inventario-ocupado" value="0" readonly>
+                        </div>
+                        <ul class="lista-inventario" id="lista-inventario"></ul>
+                        <button onclick="adicionarItemInventario()" class="botao-adicionar-linha-full botao-adicionar">+ Adicionar Item</button>
+                    </div>
+
+                    <div id="tab-pane-log" class="tab-pane">
+                        </div>
+                </div> </div> <section class="bloco-resistencias">
+                <div class="label-geral">RESISTÊNCIAS</div>
+                <div class="resistencias-grid">
+                    
+                    <div class="resistencia-item physical" data-dano="impacto">
+                        <label>IMPACTO</label>
+                        <input type="number" value="0" min="0" class="input-no-spin resistencia-input-violeta">
+                    </div>
+                    <div class="resistencia-item physical" data-dano="balistico">
+                        <label>BALÍSTICO</label>
+                        <input type="number" value="0" min="0" class="input-no-spin resistencia-input-violeta">
+                    </div>
+                    <div class="resistencia-item physical" data-dano="cortante-perfurante">
+                        <label>CORTANTE/PERFURANTE</label>
+                        <input type="number" value="0" min="0" class="input-no-spin resistencia-input-violeta">
+                    </div>
+                    
+                    <div class="resistencia-item empty"></div>
+
+                    <div class="resistencia-item elemental" data-elemento="sangue">
+                        <label>SANGUE</label>
+                        <input type="number" value="0" min="0" class="input-no-spin resistencia-input-violeta">
+                    </div>
+                    <div class="resistencia-item elemental" data-elemento="conhecimento">
+                        <label>CONHECIMENTO</label>
+                        <input type="number" value="0" min="0" class="input-no-spin resistencia-input-violeta">
+                    </div>
+                    <div class="resistencia-item elemental" data-elemento="energia">
+                        <label>ENERGIA</label>
+                        <input type="number" value="0" min="0" class="input-no-spin resistencia-input-violeta">
+                    </div>
+                    <div class="resistencia-item elemental" data-elemento="morte">
+                        <label>MORTE</label>
+                        <input type="number" value="0" min="0" class="input-no-spin resistencia-input-violeta">
+                    </div>
+                </div>
+            </section>
+
+        </div> 
+    </div>
+
+    <div id="modal-ritual" class="modal-ficha">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="fecharModalRitual()">&times;</span>
+            <div class="modal-ritual-header">
+                <h3 id="modal-ritual-titulo">Editar Ritual</h3>
+                <div class="ritual-icone-e-seletor">
+                    <img id="modal-ritual-icone" src="" alt="Elemento" class="ritual-icone-afinidade">
+                    <select id="modal-ritual-elemento" onchange="atualizarIconeElemento(this.value)">
+                        <option value="Energia">Energia</option>
+                        <option value="Conhecimento">Conhecimento</option>
+                        <option value="Sangue">Sangue</option>
+                        <option value="Morte">Morte</option>
+                    </select>
+                </div>
+            </div>
+            
+            <label>Nome do Ritual:</label>
+            <input type="text" id="modal-ritual-nome" placeholder="Ex: Definhar">
+
+            <div class="modal-ritual-row">
+                <div class="modal-ritual-col">
+                    <label>Custo (PE):</label>
+                    <input type="text" id="modal-ritual-custo" placeholder="Ex: 1 PE">
+                </div>
+                <div class="modal-ritual-col">
+                    <label>Execução:</label>
+                    <input type="text" id="modal-ritual-execucao" placeholder="Ex: Ação Padrão">
+                </div>
+            </div>
+
+            <div class="modal-ritual-row">
+                <div class="modal-ritual-col">
+                    <label>Alcance:</label>
+                    <input type="text" id="modal-ritual-alcance" placeholder="Ex: Curto">
+                </div>
+                <div class="modal-ritual-col">
+                    <label>Duração:</label>
+                    <input type="text" id="modal-ritual-duracao" placeholder="Ex: Cena">
+                </div>
+            </div>
+
+            <label>Danos / Efeitos:</label>
+            <div class="modal-ritual-danos-container">
+                <input type="text" id="modal-ritual-dano-normal" placeholder="Dano Normal (Ex: 3d8+3)">
+                <input type="text" id="modal-ritual-dano-discente" placeholder="Dano Discente (Ex: 5d8+5)">
+                <input type="text" id="modal-ritual-dano-verdadeiro" placeholder="Dano Verdadeiro (Ex: 7d8+7)">
+            </div>
+            
+            <label>Descrição Completa:</label>
+            <textarea id="modal-ritual-descricao" rows="5" placeholder="Regras completas, efeitos e aprimoramentos."></textarea>
+            
+            <button class="botao-salvar-modal botao-adicionar" onclick="salvarRitualDetalhes()">Salvar Ritual</button>
+        </div>
+    </div>
+
+    <div id="modal-item" class="modal-ficha">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="fecharModalItem()">&times;</span>
+            <h3 class="modal-ritual-header">Detalhes do Item</h3>
+            
+            <label>Link da Imagem do Item:</label>
+            <input type="text" id="modal-item-url" placeholder="Cole o link da imagem aqui">
+            <div class="modal-item-foto-container">
+                <img id="modal-item-foto" src="" alt="Foto do Item">
+            </div>
+
+            <label>Nome:</label>
+            <input type="text" id="modal-item-nome" placeholder="Nome do Item">
+
+            <div class="modal-ritual-row">
+                <div class="modal-ritual-col">
+                    <label>Melhorias:</label>
+                    <input type="text" id="modal-item-melhorias" placeholder="Ex: Cinerária, Potente, etc.">
+                </div>
+                <div class="modal-ritual-col">
+                    <label>Espaço*:</label>
+                    <input type="number" id="modal-item-espaco" value="1" min="0" class="input-no-spin">
+                </div>
+            </div>
+            
+            <label>Descrição do Item:</label>
+            <textarea id="modal-item-descricao" rows="5" placeholder="Detalhes, poderes, e história do item..."></textarea>
+            
+            <button class="botao-salvar-modal botao-adicionar" onclick="salvarItemDetalhes()">Salvar Detalhes</button>
+            <button class="botao-salvar-modal botao-remover" onclick="removerItemInventario()">Remover Item</button>
+        </div>
+    </div>
+
+    <div id="rolagem-toast-container"></div>
+
+    <script src="ficha.js"></script>
+</body>
+</html>

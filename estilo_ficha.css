@@ -1,0 +1,511 @@
+/* ==================================== */
+/* ESTILOS PADRÃO (DARK COM VIOLETA) */
+/* ==================================== */
+:root {
+    --cor-fundo-principal: #1e1e1e;
+    --cor-fundo-secundario: #0d0d0d;
+    --cor-divisoria: #8a2be2;
+    --cor-texto: #ffffff;
+    --cor-texto-principal: #8a2be2;
+    --cor-input-fundo: #2a2a2a;
+    --cor-sombra-efeito: rgba(138, 43, 226, 0.4);
+    --cor-botao-adicionar: #4caf50;
+    --cor-botao-remover: #f44336;
+    --cor-borda-bloco: #333;
+    --cor-pv-barra: #4caf50;
+    --cor-san-barra: #6a9acb;
+    --cor-pe-barra: var(--cor-divisoria);
+    --fundo-textura: url('https://static.wikia.nocookie.net/e1667e68-ebe1-4dc7-8486-512f20ffd584');
+}
+
+/* ==================================== */
+/* TEMAS DE CORES (AFINIDADES) */
+/* ==================================== */
+body.theme-violet { --cor-divisoria: #8a2be2; --cor-texto-principal: #8a2be2; --cor-sombra-efeito: rgba(138, 43, 226, 0.4); --cor-pe-barra: #8a2be2; }
+body.theme-yellow { --cor-divisoria: #ffb700; --cor-texto-principal: #ffb700; --cor-sombra-efeito: rgba(255, 183, 0, 0.4); --cor-pe-barra: #ffb700; }
+body.theme-red { --cor-divisoria: #e63946; --cor-texto-principal: #e63946; --cor-sombra-efeito: rgba(230, 57, 70, 0.4); --cor-pe-barra: #e63946; }
+body.theme-white { --cor-divisoria: #e0e0e0; --cor-texto-principal: #e0e0e0; --cor-sombra-efeito: rgba(224, 224, 224, 0.4); --cor-pe-barra: #e0e0e0; }
+body.theme-light-blue { --cor-divisoria: #e0f7fa; --cor-texto-principal: #e0f7fa; --cor-sombra-efeito: rgba(180, 250, 249, 0.4); --cor-pe-barra: #B4FAF9; --cor-fundo-principal: #181820; }
+
+/* Estilos Gerais */
+* { box-sizing: border-box; }
+body {
+    font-family: 'Gabriele Bad AH Regular', sans-serif;
+    background-color: #111; 
+    background-image: var(--fundo-textura);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    margin: 0;
+    padding: 0;
+    color: var(--cor-texto);
+    transition: all 0.3s ease; 
+}
+
+.ficha-container {
+    width: 100%;
+    min-height: 100vh;
+    height: 100vh; /* MUDANÇA: Força a altura total para a rolagem interna funcionar */
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    background-color: var(--cor-fundo-principal);
+    border-top: 5px solid var(--cor-divisoria);
+    border-bottom: 5px solid var(--cor-divisoria);
+    box-shadow: 0 0 30px var(--cor-sombra-efeito); 
+    padding: 25px 40px; 
+    opacity: 0.9; 
+}
+.label-geral { font-weight: bold; text-align: center; border-bottom: 2px solid var(--cor-divisoria); padding-bottom: 5px; margin-bottom: 15px; color: var(--cor-texto-principal); font-size: 1.1em; letter-spacing: 1.5px; text-transform: uppercase; }
+section { background-color: var(--cor-fundo-secundario); padding: 15px; border: 1px solid var(--cor-borda-bloco); }
+input[type="text"], input[type="number"], textarea, select { background-color: var(--cor-input-fundo); color: var(--cor-texto); border: 1px solid #444; padding: 5px 8px; font-size: 14px; border-radius: 3px; transition: border-color 0.3s; }
+input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus { border-color: var(--cor-divisoria); outline: none; }
+.input-no-spin::-webkit-outer-spin-button, .input-no-spin::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.botao-adicionar { background-color: var(--cor-botao-adicionar); color: var(--cor-fundo-principal); font-weight: bold; }
+.botao-remover { background-color: var(--cor-botao-remover); color: white; font-weight: bold; }
+
+/* ==================================== */
+/* COLUNAS */
+/* ==================================== */
+
+.coluna-esquerda { flex: 0 0 480px; display: flex; flex-direction: column; gap: 20px; }
+.coluna-direita { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+    min-height: 0; /* MUDANÇA: Essencial para o flex-grow e overflow funcionar */
+}
+
+/* ==================================== */
+/* COLUNA ESQUERDA: FOTO E INFO */
+/* ==================================== */
+.header-foto-afinidade { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
+.foto-container { flex-grow: 1; height: 350px; position: relative; cursor: pointer; overflow: hidden; border: 2px solid var(--cor-borda-bloco); }
+#personagem-foto { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.3s; }
+.upload-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.7); color: white; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; opacity: 1; transition: opacity 0.3s; border: 3px dashed var(--cor-divisoria); }
+#personagem-foto:not([src=""]) { opacity: 0.8; }
+#personagem-foto:not([src=""]) + .upload-overlay { opacity: 0; }
+.foto-container:hover .upload-overlay { opacity: 1; }
+.afinidade-container { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.afinidade-slot { width: 100px; height: 100px; border: 3px solid var(--cor-divisoria); border-radius: 50%; overflow: hidden; cursor: pointer; box-shadow: 0 0 10px var(--cor-sombra-efeito); background-color: var(--cor-fundo-principal); }
+.simbolo-icone-afinidade { width: 100%; height: 100%; object-fit: cover; }
+.afinidade-label { font-size: 15px; font-weight: bold; color: var(--cor-texto-principal); text-shadow: 0 0 5px var(--cor-sombra-efeito); }
+.info-basica-bloco { margin-top: 10px; }
+.campo-destaque-item { margin-bottom: 10px; }
+.info-complementar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.campo-destaque-item label { display: block; font-size: 17px; font-weight: bold; color: #aaa; margin-bottom: 3px; }
+.campo-destaque-item input, .campo-destaque-item select { 
+    width: 100%; 
+    /* MUDANÇA: Estilos dos campos de info */
+    font-size: 17px;
+    padding: 8px 10px;
+    border: 2px solid var(--cor-divisoria);
+    border-radius: 4px;
+}
+
+/* ==================================== */
+/* STATUS VITAIS & COMBATE */
+/* ==================================== */
+.barras-status-container-horizontal { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.barra-secao { display: flex; align-items: center; gap: 10px; }
+.barra-label-status { font-weight: bold; width: 60px; text-align: right; font-size: 30px; }
+.pv .barra-label-status { color: var(--cor-pv-barra); }
+.san .barra-label-status { color: var(--cor-san-barra); }
+.pe .barra-label-status { color: var(--cor-pe-barra); }
+.barra-progresso-fundo { flex-grow: 1; height: 50px; background-color: #333; border-radius: 15px; position: relative; overflow: hidden; border: 3px solid var(--cor-borda-bloco); }
+.barra-progresso-preenchimento { height: 100%; width: 100%; transition: width 0.3s ease; position: absolute; top: 0; left: 0; }
+.barra-progresso-preenchimento.vida { background-color: var(--cor-pv-barra); }
+.barra-progresso-preenchimento.pe { background-color: var(--cor-pe-barra); }
+.barra-progresso-preenchimento.sanidade { background-color: var(--cor-san-barra); }
+.barra-progresso-texto { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-weight: bold; color: rgb(0, 0, 0); text-shadow: 0 0 3px black; }
+.barra-progresso-texto input { background: none; border: none; color: inherit; font-weight: bold; width: px; text-align: center; padding: 0; }
+.combate-info { display: flex; justify-content: space-around; gap: 18px; padding: 5px; }
+.secao-combate { text-align: center; }
+.label-combate { font-size: 23px; font-weight: bold; color: #aaa; margin-bottom: 5px; }
+.input-combate-valor { width: 100px; text-align: center; font-size: 30px; border-bottom: 2px solid var(--cor-divisoria); }
+
+.secao-iniciativa-rolavel {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0s;
+}
+.secao-iniciativa-rolavel .input-combate-valor {
+    background-color: transparent;
+    border-bottom-color: var(--cor-divisoria);
+    pointer-events: none;
+}
+.secao-iniciativa-rolavel:hover {
+    background-color: var(--cor-divisoria);
+}
+.secao-iniciativa-rolavel:hover .label-combate {
+    color: var(--cor-fundo-principal);
+}
+.secao-iniciativa-rolavel:hover .input-combate-valor {
+    color: var(--cor-fundo-principal);
+    border-bottom-color: var(--cor-fundo-principal);
+}
+
+/* ==================================== */
+/* ATRIBUTOS (VERSÃO FINAL: ALINHAMENTO, CENTRALIZAÇÃO E INVISIBILIDADE) */
+/* ==================================== */
+.circulo-atributo {
+    position: relative;
+    width: 120px; 
+    height: 120px;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; 
+    align-items: center;
+    border: 6px solid white;
+    border-radius: 50%;
+    transition: all 0.3s ease; 
+    padding: 5px 8px; 
+}
+.circulo-atributo:hover {
+    border-color: var(--cor-divisoria);
+    box-shadow: 0 0 15px var(--cor-sombra-efeito);
+}
+.bloco-atributos {
+    padding: 0; 
+    background-image: url('https://image.jimcdn.com/app/cms/image/transf/none/path/sa5cb48c317840f57/image/i17f4c355e9f5c62f/version/1656870519/image.png'); 
+    background-size: 105%; 
+    background-position: center 5%;
+    background-repeat: no-repeat; 
+    background-color: none; 
+
+    border: 1px solid var(--cor-borda-bloco);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 480px; 
+}
+.pentagono-atributos-container {
+    position: relative;
+    width: 420px; 
+    height: 420px;
+}
+.pentagono-centro {
+    position: absolute;
+    top: -3%;
+    left: 51%;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    font-size: 1em; 
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 10;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+}
+.secao-atributo {
+    position: absolute;
+    z-index: 5;
+    transform: translate(-50%, -50%); 
+    cursor: pointer; 
+    .input-atributo-mod-principal-display { display: none; }
+}
+.secao-atributo.pent-agi { top: 15%; left: 50%; } 
+.secao-atributo.pent-int { top: 43%; left: 88%; } 
+.secao-atributo.pent-vig { top: 88%; left: 73%; }
+.secao-atributo.pent-pre { top: 88%; left: 27%; }
+.secao-atributo.pent-for { top: 43%; left: 12%; }
+.atributo-valor-container {
+    width: 85px; 
+    height: 75px; 
+    background-color: transparent; 
+    border: none; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.input-atributo-pentagono {
+    width: 100%;
+    height: 100%;
+    background-color: transparent !important;
+    background: none !important; 
+    border: none !important; 
+    color: white !important;
+    font-size: 3.8em !important; 
+    font-weight: 900;
+    text-align: center;
+    padding: 0;
+}
+.input-atributo-pentagono:focus {
+    outline: none !important; 
+    border: none !important;
+    background-color: transparent !important; 
+}
+.label-atributo-pentagono {
+    display: block; 
+    color: white; 
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.0em; 
+    line-height: 0;
+    text-transform: uppercase;
+}
+.input-atributo-pentagono::-webkit-outer-spin-button,
+.input-atributo-pentagono::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.input-atributo-pentagono {
+    -moz-appearance: textfield;
+}
+
+/* ==================================== */
+/* COLUNA DIREITA: ABAS E RESISTÊNCIAS */
+/* ==================================== */
+
+.ficha-abas-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Ocupa espaço restante */
+    min-height: 0; /* Permite encolher e rolar */
+    background-color: var(--cor-fundo-secundario);
+    border: 1px solid var(--cor-borda-bloco);
+}
+
+.tab-navigation { display: flex; border-bottom: 2px solid var(--cor-divisoria); margin-bottom: 0; }
+.tab-button { flex-grow: 1; background-color: transparent; border: none; color: #888; padding: 25px 30px; cursor: pointer; font-weight: bold; transition: color 0.3s, background-color 0.3s; }
+.tab-button.active { background-color: var(--cor-divisoria); color: var(--cor-fundo-principal); }
+
+.tab-panes-container {
+    flex: 1;
+    min-height: 0;
+    position: relative; /* Para abas absolutas */
+}
+
+.tab-pane {
+    display: none;
+    padding: 15px; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.tab-pane.active {
+    display: block;
+    overflow-y: auto; /* Adiciona rolagem SÓ na aba ativa */
+}
+
+.tab-pane.active::-webkit-scrollbar {
+    width: 10px;
+}
+.tab-pane.active::-webkit-scrollbar-track {
+    background: var(--cor-fundo-secundario);
+    border-radius: 10px;
+}
+.tab-pane.active::-webkit-scrollbar-thumb {
+    background-color: var(--cor-divisoria);
+    border-radius: 6px;
+    border: 2px solid var(--cor-fundo-secundario);
+}
+.tab-pane.active::-webkit-scrollbar-thumb:hover {
+    background-color: #ffffff;
+}
+
+
+/* PERÍCIAS (AJUSTES VISUAIS) */
+.pericias-list-grid { display: grid; grid-template-columns: 3fr 0.5fr 0.5fr 0.5fr; gap: 5px 10px; align-items: center; }
+.pericia-item-header { font-size: 23px; font-weight: bold; color: var(--cor-texto-principal); text-align: center; padding: 5px 0; border-bottom: 1px solid #444; }
+.pericia-item-header:first-child { text-align: left; }
+.pericia-header-group { grid-column: 1 / -1; font-size: 27px; font-weight: bold; color: var(--cor-texto-principal); background-color: #1a1a1a; padding: 5px 8px; margin: 5px 0; border-left: 5px solid var(--cor-divisoria); letter-spacing: 1px; }
+.pericia-item { display: contents; }
+.pericia-item > * { 
+    padding-top: 5px;
+    padding-bottom: 5px;
+    transition: background-color 0.2s;
+    border-radius: 2px;
+}
+.pericia-item:hover > * {
+    background-color: var(--cor-divisoria);
+    color: var(--cor-fundo-principal) !important;
+    cursor: pointer;
+}
+.pericia-item label { font-size: 14px; align-self: center; padding-left: 5px; color: #ccc; }
+.pericia-item input { text-align: center; padding: 2px 0; font-size: 14px; }
+.input-atributo-mod, .input-pericia-valor { background-color: #222; }
+.pericia-item:hover .input-atributo-mod, .pericia-item:hover .input-pericia-valor { background-color: transparent; }
+.input-pericia-total { background-color: var(--cor-divisoria); color: var(--cor-fundo-principal); font-weight: bold; }
+.pericia-item:hover .input-pericia-total { background-color: var(--cor-fundo-principal); color: var(--cor-divisoria); }
+
+/* ATAQUES (ÍCONES DE ROLAGEM) */
+.tabela-ataque { width: 100%; border-collapse: collapse; margin-top: 15px; }
+.tabela-ataque th { background-color: var(--cor-divisoria); color: var(--cor-fundo-principal); padding: 10px 8px; font-size: 16px; }
+.tabela-ataque td { border: 1px solid none; padding: 5px; vertical-align: middle; }
+.input-tabela { width: 100%; border: none; padding: 15px 12px; font-size: 17px; text-align: center; background-color: var(--cor-input-fundo); }
+.input-tabela:focus { background-color: none; }
+.celula-rolagem { display: flex; justify-content: center; align-items: center; gap: 5px; height: 100%; }
+
+/* MUDANÇA: Estilo do botão de rolar */
+.botao-rolar-dado { 
+    background: none; 
+    border: 1px solid #555; 
+    color: #999; 
+    cursor: pointer; 
+    padding: 15px; 
+    border-radius: 4px; 
+    line-height: 1;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.botao-rolar-dado:hover { 
+    background-color: var(--cor-divisoria); 
+    color: var(--cor-fundo-principal); 
+    border-color: var(--cor-divisoria); 
+}
+
+/* MUDANÇA: Estilo do ícone de rolar */
+.icone-rolar-dado {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: #999; /* Cor padrão do ícone */
+    mask-image: url('https://cdn-icons-png.flaticon.com/512/6545/6545894.png');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    transition: background-color 0.3s;
+}
+.botao-rolar-dado:hover .icone-rolar-dado {
+    background-color: var(--cor-fundo-principal); /* Cor do ícone no hover */
+}
+
+.botao-remover-linha { background-color: var(--cor-botao-remover); color: white; border: none; width: 100%; height: 100%; cursor: pointer; font-weight: bold; padding: 8px 0; }
+.botao-adicionar-linha-full { padding: 10px; border: none; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; }
+
+/* RITUAIS (NOVO LAYOUT) */
+.rituais-tab-navigation { display: flex; margin-bottom: 10px; }
+.ritual-tab-button { flex-grow: 1; background-color: #1a1a1a; border: 1px solid #444; border-bottom: none; color: #888; padding: 8px 10px; cursor: pointer; font-size: 14px; }
+.ritual-tab-button.active { background-color: var(--cor-divisoria); color: var(--cor-fundo-principal); }
+.ritual-tab-pane { display: none; }
+.ritual-tab-pane.active { display: block; }
+.lista-rituais { list-style: none; padding: 0; margin: 0; }
+.ritual-item { display: flex; flex-direction: column; padding: 10px; background-color: #2a2a2a; border-bottom: 1px solid #444; }
+.ritual-item-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+.ritual-info-principal { display: flex; align-items: center; flex-grow: 1; }
+.ritual-icone-afinidade { width: 40px; height: 40px; margin-right: 10px; border-radius: 50%; border: 1px solid #555; }
+.ritual-nome-display { flex-grow: 1; font-weight: bold; }
+.botao-remover-ritual { background-color: var(--cor-botao-remover); color: white; border: none; padding: 5px 8px; font-size: 10px; cursor: pointer; }
+.ritual-danos-container { display: flex; justify-content: space-around; padding: 10px 0 5px 0; border-top: 1px solid #444; margin-top: 10px; }
+.ritual-dano-bloco { text-align: center; flex: 1; }
+.ritual-dano-bloco label { font-size: 10px; color: #888; text-transform: uppercase; }
+.ritual-dano-formula { font-weight: bold; font-size: 1.1em; cursor: pointer; display: block; padding: 5px; border-radius: 4px; }
+.ritual-dano-formula:hover { background-color: var(--cor-divisoria); color: var(--cor-fundo-principal); }
+.botao-adicionar-ritual { padding: 10px; border: none; width: 100%; margin-top: 10px; cursor: pointer; font-weight: bold; }
+
+/* INVENTÁRIO */
+.inventario-peso-limite { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #444; }
+.inventario-peso-limite label { font-size: 10px; font-weight: bold; color: var(--cor-texto-principal); align-self: flex-end; }
+.inventario-peso-limite input { width: 50px; text-align: center; font-weight: bold; font-size: 14px; border: 1px solid var(--cor-divisoria); }
+.lista-inventario { list-style: none; padding: 0; margin: 0; }
+.item-inventario { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background-color: #2a2a2a; border-bottom: 1px solid #444; cursor: pointer; }
+.item-inventario:hover { background-color: #3a3a3a; }
+.item-nome-display { flex-grow: 1; font-weight: bold; }
+.item-espaco-display { font-size: 12px; background-color: #555; padding: 2px 5px; border-radius: 3px; margin-left: 10px; }
+
+/* RESISTÊNCIAS */
+.bloco-resistencias { 
+    margin-top: auto;
+}
+.resistencias-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.resistencia-item { padding: 5px; border-radius: 5px; text-align: center; background-color: var(--cor-fundo-principal); border: 1px solid var(--cor-borda-bloco); }
+.resistencia-item.empty { background: none; border: none; }
+.resistencia-item label { display: block; font-size: 12px; font-weight: bold; color: #ccc; margin-bottom: 5px; }
+.resistencia-item input { width: 100%; text-align: center; font-size: 16px; font-weight: bold; padding: 5px 0; border: none; background-color: transparent; border-bottom: 2px solid var(--cor-divisoria); }
+.resistencia-item[data-elemento="sangue"] { background-color: #380205; border: 1px solid #e63946; }
+.resistencia-item[data-elemento="conhecimento"] { background-color: #382c00; border: 1px solid #ffb700; }
+.resistencia-item[data-elemento="energia"] { background-color: #200038; border: 1px solid #8a2be2; }
+.resistencia-item[data-elemento="morte"] { background-color: #303030; border: 1px solid #e0e0e0; }
+
+/* MODAIS (RITUAL E ITEM) */
+.modal-ficha { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); }
+.modal-conteudo { background-color: var(--cor-fundo-principal); margin: 5% auto; padding: 25px; border: 3px solid var(--cor-divisoria); width: 90%; max-width: 600px; position: relative; box-shadow: 0 0 20px var(--cor-sombra-efeito); }
+.fechar-modal { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+.modal-ficha label { display: block; margin-top: 10px; margin-bottom: 5px; font-weight: bold; color: var(--cor-texto-principal); font-size: 0.9em; }
+.modal-ficha input[type="text"], .modal-ficha input[type="number"], .modal-ficha textarea, .modal-ficha select { width: 100%; padding: 8px; margin-bottom: 10px; font-size: 14px; }
+.modal-ritual-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.ritual-icone-e-seletor { display: flex; align-items: center; gap: 10px; }
+#modal-ritual-icone { width: 30px; height: 30px; border: 2px solid #555; border-radius: 50%; }
+.modal-ritual-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.modal-ritual-col { flex: 1; }
+.modal-ritual-danos-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+.botao-salvar-modal { padding: 10px 15px; border: none; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
+.modal-item-foto-container { width: 100%; height: 150px; border: 1px solid var(--cor-divisoria); background-color: #333; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; margin-bottom: 10px; }
+#modal-item-foto { width: 100%; height: 100%; object-fit: cover; }
+
+/* ==================================== */
+/* NOVO: POP-UP DE ROLAGEM (TOAST) */
+/* ==================================== */
+#rolagem-toast-container {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 3000;
+    display: flex;
+    flex-direction: column-reverse; /* Novos itens aparecem em cima */
+    gap: 10px;
+    pointer-events: none;
+}
+.rolagem-toast-item {
+    width: 320px;
+    background-color: #181818;
+    color: #fff;
+    border: 2px solid var(--cor-divisoria);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: translateX(100%);
+}
+.rolagem-toast-item.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.rolagem-toast-item.fade-out {
+    opacity: 0;
+    transform: translateX(100%) scale(0.9);
+}
+.rolagem-toast-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #333;
+}
+.rolagem-toast-simbolo {
+    width: 30px;
+    height: 30px;
+    background-color: var(--cor-divisoria);
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0c5.3 0 10.5.8 15.5 2.5l192 64c10.3 3.4 17.5 13.1 17.5 24V421.5c0 10.9-7.2 20.5-17.5 24l-192 64C266.5 511.2 261.3 512 256 512s-10.5-.8-15.5-2.5l-192-64C38.2 442.1 31 432.5 31 421.5V90.5c0-10.9 7.2-20.5 17.5-24l192-64C245.5.8 250.7 0 256 0z"/></svg>') no-repeat center;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0c5.3 0 10.5.8 15.5 2.5l192 64c10.3 3.4 17.5 13.1 17.5 24V421.5c0 10.9-7.2 20.5-17.5 24l-192 64C266.5 511.2 261.3 512 256 512s-10.5-.8-15.5-2.5l-192-64C38.2 442.1 31 432.5 31 421.5V90.5c0-10.9 7.2-20.5 17.5-24l192-64C245.5.8 250.7 0 256 0z"/></svg>') no-repeat center;
+}
+.rolagem-toast-titulo {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-left: 10px;
+    flex-grow: 1;
+}
+.rolagem-toast-corpo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    font-size: 1.1em;
+}
+.rolagem-toast-formula {
+    color: #aaa;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+.rolagem-toast-total {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.hidden { display: none !important; }

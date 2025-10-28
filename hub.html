@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Athame VTT - Hub de Campanhas</title>
+    <style>
+        body { background-color: #1e1e1e; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; }
+        .container { background-color: #2a2a2a; padding: 40px; border-radius: 8px; border: 2px solid #8a2be2; }
+        h1 { color: #8a2be2; margin-top: 0; }
+        .secao { margin: 30px 0; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; background: #333; border: 1px solid #555; color: #fff; border-radius: 4px; box-sizing: border-box; text-align: center; font-size: 1.1em; text-transform: uppercase; }
+        button { width: 100%; padding: 15px; background-color: #8a2be2; border: none; color: #fff; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1.1em; }
+        #message { margin-top: 15px; font-weight: bold; color: #f44336; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bem-vindo!</h1>
+
+        <div class="secao">
+            <h2>Criar uma nova aventura</h2>
+            <form onsubmit="criarCampanha(event)">
+                <input type="text" id="nome-campanha" placeholder="Nome da Campanha" required>
+                <button type="submit">Criar Campanha</button>
+            </form>
+        </div>
+
+        <hr style="border-color: #444;">
+
+        <div class="secao">
+            <h2>Entrar em uma aventura</h2>
+            <form onsubmit="juntarCampanha(event)">
+                <input type="text" id="codigo-campanha" placeholder="Código da Campanha" required>
+                <button type="submit">Juntar-se</button>
+            </form>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script src="hub.js"></script>
+</body>
+</html>
